@@ -6,8 +6,6 @@ jobs:
     steps:
       - checkout
       - run: flutter doctor
-      - run: flutter test
-      - run: flutter -v build apk
   test:
     docker:
       - image: cirrusci/flutter
