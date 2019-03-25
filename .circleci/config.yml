@@ -1,16 +1,34 @@
 version: 2
 jobs:
-  build:
+  doctor:
     docker:
-      - image: debian:stretch
-
+      - image: cirrusci/flutter
     steps:
       - checkout
+      - run: flutter doctor
+      - run: flutter test
+      - run: flutter -v build apk
+  test:
+    docker:
+      - image: cirrusci/flutter
+    steps:
+      - checkout
+      - run: flutter test
+  build:
+    docker:
+      - image: cirrusci/flutter
+    steps:
+      - checkout
+      - run: flutter -v build apk
 
-      - run:
-          name: Greeting
-          command: echo Hello, world.
-
-      - run:
-          name: Print the Current Time
-          command: date
+workflows:
+  version: 2
+  doctor_test_build:
+    jobs:
+      - doctor
+      - test:
+          requires:
+            - doctor
+      - build:
+          requires:
+            - doctor
