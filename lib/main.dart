@@ -1,88 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'package:flutter/services.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Startup Name Generator',
-      home: RandomWords(),
-    );
+        debugShowCheckedModeBanner: false,
+        title: "Welcome pczk",
+        home: new Material(
+            child: new Container(
+                padding: const EdgeInsets.all(30.0),
+                color: Colors.white,
+                child: new Container(
+                  child: new Center(
+                      child: new Column(children: [
+                    Padding(padding: EdgeInsets.only(top: 140.0)),
+                    new Text(
+                      'Enter your note',
+                      style: new TextStyle(
+                          color: Colors.indigo.shade400, fontSize: 25.0),
+                    ),
+                    new Padding(padding: EdgeInsets.only(top: 50.0)),
+                    new TextFormField(
+                      autovalidate: true,
+                      decoration: new InputDecoration(
+                        labelText: "Enter text",
+                        fillColor: Colors.white,
+                        border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(15.0),
+                          borderSide: new BorderSide(),
+                        ),
+                      ),
+                      validator: (val) {
+                        if (val.length == 0) {
+                          return "Note cannot be empty";
+                        } else {
+                          return null;
+                        }
+                      },
+                      keyboardType: TextInputType.text,
+                      style: new TextStyle(
+                        fontFamily: "Poppins",
+                      ),
+                      onFieldSubmitted: (String data) {
+                        print('Debugging like in JS ecksde');
+                        SystemNavigator.pop();
+                      },
+                    ),
+                  ])),
+                ))));
   }
-}
-
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-  final Set<WordPair> _saved = new Set<WordPair>();
-  Widget _buildRow(WordPair pair) {
-    final bool alreadySaved = _saved.contains(pair);
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-      trailing: new Icon(alreadySaved ? Icons.favorite : Icons.favorite_border,
-          color: alreadySaved ? Colors.red : null),
-      onTap: () => {
-            setState(
-                () => alreadySaved ? _saved.remove(pair) : _saved.add(pair))
-          },
-    );
-  }
-
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(8.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider(); /*2*/
-
-          final index = i ~/ 2; /*3*/
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
-  void _pushSaved() {
-    Navigator.of(context)
-        .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
-      final Iterable<ListTile> tiles = _saved.map((WordPair pair) {
-        return new ListTile(
-            title: new Text(pair.asPascalCase, style: _biggerFont));
-      });
-      final List<Widget> divided =
-          ListTile.divideTiles(context: context, tiles: tiles).toList();
-      return new Scaffold(
-        appBar: new AppBar(title: const Text('saved')),
-        body: new ListView(
-          children: divided,
-        ),
-      );
-    }));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: Text('Startup Name Generator'),
-        actions: <Widget>[
-          new IconButton(
-            icon: const Icon(Icons.list),
-            onPressed: _pushSaved,
-          ),
-        ],
-      ),
-      body: _buildSuggestions(),
-    );
-  }
-}
-
-class RandomWords extends StatefulWidget {
-  @override
-  RandomWordsState createState() => new RandomWordsState();
 }
