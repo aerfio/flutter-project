@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'textForm.dart';
+import 'titleText.dart';
 
 void main() => runApp(new MyApp());
 
@@ -9,48 +10,64 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Welcome pczk",
-        home: new Material(
-            child: new Container(
-                padding: const EdgeInsets.all(30.0),
-                color: Colors.white,
-                child: new Container(
-                  child: new Center(
-                      child: new Column(children: [
-                    Padding(padding: EdgeInsets.only(top: 140.0)),
-                    new Text(
-                      'Enter your note',
-                      style: new TextStyle(
-                          color: Colors.indigo.shade400, fontSize: 25.0),
-                    ),
-                    new Padding(padding: EdgeInsets.only(top: 50.0)),
-                    new TextFormField(
-                      autofocus: true,
-                      autovalidate: true,
-                      decoration: new InputDecoration(
-                        labelText: "Enter text",
-                        fillColor: Colors.white,
-                        border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(15.0),
-                          borderSide: new BorderSide(),
-                        ),
-                      ),
-                      validator: (val) {
-                        if (val.length == 0) {
-                          return "Note cannot be empty";
-                        } else {
-                          return null;
-                        }
-                      },
-                      keyboardType: TextInputType.text,
-                      style: new TextStyle(
-                        fontFamily: "Poppins",
-                      ),
-                      onFieldSubmitted: (String data) {
-                        print('Debugging like in JS ecksde');
-                        SystemNavigator.pop();
-                      },
-                    ),
-                  ])),
-                ))));
+        theme: ThemeData.light(),
+        // darkTheme: ThemeData.dark(),
+        home: MainRoute());
+  }
+}
+
+class MainRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        home: Scaffold(
+      appBar: AppBar(
+        title: Text('My app'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_forward),
+            tooltip: 'Search',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SecondRoute()),
+              );
+            },
+          ),
+        ],
+      ),
+      body: new Material(
+          child: new Container(
+              padding: const EdgeInsets.all(30.0),
+              color: Colors.white,
+              child: new Container(
+                child: new Center(
+                    child: new Column(children: [
+                  Padding(padding: EdgeInsets.only(top: 110.0)),
+                  TitleText(),
+                  new Padding(padding: EdgeInsets.only(top: 50.0)),
+                  new TextForm()
+                ])),
+              ))),
+    ));
+  }
+}
+
+class SecondRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Second Route"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
   }
 }
