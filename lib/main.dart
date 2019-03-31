@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
                     ),
                     new Padding(padding: EdgeInsets.only(top: 50.0)),
                     new TextFormField(
+                      autofocus: true,
                       autovalidate: true,
                       decoration: new InputDecoration(
                         labelText: "Enter text",
