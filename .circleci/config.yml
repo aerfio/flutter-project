@@ -1,32 +1,15 @@
 version: 2
 jobs:
-  doctor:
-    docker:
-      - image: cirrusci/flutter
-    steps:
-      - checkout
-      - run: flutter doctor
-  test:
-    docker:
-      - image: cirrusci/flutter
-    steps:
-      - checkout
-      - run: flutter test
-  build:
-    docker:
-      - image: cirrusci/flutter
-    steps:
-      - checkout
-      - run: flutter -v build apk
+    doctor_and_build:
+        docker:
+            - image: cirrusci/flutter
+        steps:
+            - checkout
+            - run: flutter doctor
+            - run: flutter -v build apk
 
 workflows:
-  version: 2
-  doctor_test_build:
-    jobs:
-      - doctor
-      - test:
-          requires:
-            - doctor
-      - build:
-          requires:
-            - doctor
+    version: 2
+    doctor__build:
+        jobs:
+            - doctor_and_build
